@@ -1,0 +1,11 @@
+.container {
+  margin: 100px auto;
+  height: 500px;
+  width: 500px;
+  display: grid;
+  grid-template: repeat(3, minmax(25px, 1fr)) / repeat(3, minmax(25px, 1fr));
+  gap: 0px;
+}
+.game-div {
+  border: 1px black solid;
+}
