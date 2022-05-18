@@ -34,21 +34,33 @@ const gameBoardModule = (() => {
 
 gameBoardModule.displayGameDivs();
 
+
+
+/* DISPLAY FUNCTIONALITY */
+/* need to write a function to check each row */
 const displayController = (() => {
   let turn = "player 1";
   const _gameDivs = document.querySelectorAll(".game-div");
+
    
   _gameDivs.forEach((gameDiv) => {
     gameDiv.addEventListener("click", () => {
       if (!gameDiv.textContent && turn === "player 1") {
         gameDiv.textContent = "X";
+        gameDiv.setAttribute("data-fill", "player 1")
         turn = "player 2";
       } else if (!gameDiv.textContent && turn === "player 2") {
         gameDiv.textContent = "O";
+        let positionArr = gameDiv.getAttribute("data-position");
+        gameBoardModule.gameBoardArr[positionArr].setAttribute("data-fill", "player 2")
+/* 
+        gameDiv.setAttribute("data-fill", "player 2") */
         turn = "player 1";
+        console.log(gameBoardModule.gameBoardArr)
       }
     });
   });
+
   return {turn};
 })();
 
