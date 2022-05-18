@@ -34,36 +34,46 @@ const gameBoardModule = (() => {
 
 gameBoardModule.displayGameDivs();
 
-
-
 /* DISPLAY FUNCTIONALITY */
 /* need to write a function to check each row */
 const displayController = (() => {
   let turn = "player 1";
   const _gameDivs = document.querySelectorAll(".game-div");
+  const playerOneArr = [];
+  let round = 1;
+  const row = [
+    "0",
+    "1",
+    "2",
+  ]; /* need to make one for every winning combination */
 
-   
   _gameDivs.forEach((gameDiv) => {
     gameDiv.addEventListener("click", () => {
       if (!gameDiv.textContent && turn === "player 1") {
         gameDiv.textContent = "X";
-        gameDiv.setAttribute("data-fill", "player 1")
+        gameDiv.setAttribute(
+          "data-fill",
+          "player 1"
+        ); /* data-fill might be unnecessary  */
+        playerOneArr.push(gameDiv.getAttribute("data-position"));
         turn = "player 2";
       } else if (!gameDiv.textContent && turn === "player 2") {
         gameDiv.textContent = "O";
-        let positionArr = gameDiv.getAttribute("data-position");
-        gameBoardModule.gameBoardArr[positionArr].setAttribute("data-fill", "player 2")
-/* 
-        gameDiv.setAttribute("data-fill", "player 2") */
+        gameDiv.setAttribute("data-fill", "player 2");
         turn = "player 1";
-        console.log(gameBoardModule.gameBoardArr)
+        round++;
+      }
+      if (round >= 3) {
+        console.log(playerOneArr);
+        /* need to turn this into a function that plugs in row and playerOneArr then add all the combinations*/
+        let result = row.every((i) => playerOneArr.includes(i));
+        console.log(result);
       }
     });
   });
 
-  return {turn};
+  return { turn };
 })();
-
 
 const Player = (playerName) => {
   const name = playerName;
