@@ -38,14 +38,57 @@ gameBoardModule.displayGameDivs();
 /* need to write a function to check each row */
 const displayController = (() => {
   let turn = "player 1";
+  let victor = "u"; 
+
   const _gameDivs = document.querySelectorAll(".game-div");
-  const playerOneArr = [];
+  const player1Arr = [];
+  const player2Arr = [];
+  
+
   let round = 1;
-  const row = [
-    "0",
-    "1",
-    "2",
-  ]; /* need to make one for every winning combination */
+  const winningPatterns = {
+    row1: [
+      "0","1","2",
+    ],
+    row2: [
+      "3","4","5",
+    ],
+    row3: [
+      "6","7","8",
+    ],
+    col1: [
+      "0","3","6",
+    ],
+    col2: [
+      "1","4","7",
+    ],
+    col3: [
+      "2","5","8",
+    ],
+    diagonal1: [
+      "0", "4", "8",
+    ],
+    diagonal2: [
+      "2", "4", "6",
+    ],
+  }
+  
+  
+
+  function victoryCheck(winningPattern, playerArr) {
+    return winningPattern.every((i) => playerArr.includes(i));
+  }
+  function checkAllPatterns(object, playerArr) {
+    let values = Object.values(object);
+    let check = false;
+    values.forEach((value) => {
+      if (victoryCheck(value, playerArr)) {
+        /* console.log("victoooooory ") */
+        return check = true;
+      }
+    })
+    return check;
+  }
 
   _gameDivs.forEach((gameDiv) => {
     gameDiv.addEventListener("click", () => {
@@ -55,22 +98,33 @@ const displayController = (() => {
           "data-fill",
           "player 1"
         ); /* data-fill might be unnecessary  */
-        playerOneArr.push(gameDiv.getAttribute("data-position"));
+        player1Arr.push(gameDiv.getAttribute("data-position"));
         turn = "player 2";
       } else if (!gameDiv.textContent && turn === "player 2") {
         gameDiv.textContent = "O";
         gameDiv.setAttribute("data-fill", "player 2");
+        player2Arr.push(gameDiv.getAttribute("data-position"));
         turn = "player 1";
         round++;
       }
-      if (round >= 3) {
-        console.log(playerOneArr);
-        /* need to turn this into a function that plugs in row and playerOneArr then add all the combinations*/
-        let result = row.every((i) => playerOneArr.includes(i));
-        console.log(result);
+      if (round >= 3) { /* need to change this to round for each person instead */
+        if (checkAllPatterns(winningPatterns, player1Arr)) {
+          victor = "Player 1";
+          console.log(victor + " Won")
+        } else if (checkAllPatterns(winningPatterns, player2Arr)) {
+          victor = "Player 2";
+          console.log(victor) + " Won";
+        } else {
+          console.log("whyyy")
+        }
+       
+       /* 
+       console.log(checkAllPatterns(winningPatterns, player1Arr));
+       checkAllPatterns(winningPatterns, player2Arr); */
       }
     });
   });
+
 
   return { turn };
 })();
