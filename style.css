@@ -9,3 +9,6 @@
 .game-div {
   border: 1px black solid;
 }
+.win-div {
+  border: 5px green solid;
+}

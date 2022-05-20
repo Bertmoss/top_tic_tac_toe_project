@@ -25,27 +25,36 @@ const gameBoardModule = (() => {
       _container.appendChild(div);
     }
   }
+  function displayWinner(winArr) {
+    for (let div of gameBoardArr) {
+     if (winArr.includes(div.getAttribute("data-position"))) {
+        div.classList.add("win-div")
+      }
+    }
+  }
+
 
   return {
     displayGameDivs: displayGameDivs,
     gameBoardArr: gameBoardArr,
+    displayWinner: displayWinner,
   };
 })();
 
 gameBoardModule.displayGameDivs();
 
+
+
 /* DISPLAY FUNCTIONALITY */
-/* need to write a function to check each row */
+
 const displayController = (() => {
   let turn = "player 1";
-  let victor = "u"; 
-
+  let victor;
+  let victorPattern; 
   const _gameDivs = document.querySelectorAll(".game-div");
   const player1Arr = [];
   const player2Arr = [];
-  
-
-  let round = 1;
+  let move = 0;
   const winningPatterns = {
     row1: [
       "0","1","2",
@@ -71,10 +80,7 @@ const displayController = (() => {
     diagonal2: [
       "2", "4", "6",
     ],
-  }
-  
-  
-
+  } 
   function victoryCheck(winningPattern, playerArr) {
     return winningPattern.every((i) => playerArr.includes(i));
   }
@@ -83,51 +89,47 @@ const displayController = (() => {
     let check = false;
     values.forEach((value) => {
       if (victoryCheck(value, playerArr)) {
-        /* console.log("victoooooory ") */
+        victorPattern = value;
         return check = true;
       }
     })
     return check;
   }
-
   _gameDivs.forEach((gameDiv) => {
     gameDiv.addEventListener("click", () => {
-      if (!gameDiv.textContent && turn === "player 1") {
+      if (!gameDiv.textContent && turn === "player 1" && !victor) {
         gameDiv.textContent = "X";
-        gameDiv.setAttribute(
-          "data-fill",
-          "player 1"
-        ); /* data-fill might be unnecessary  */
         player1Arr.push(gameDiv.getAttribute("data-position"));
         turn = "player 2";
-      } else if (!gameDiv.textContent && turn === "player 2") {
+        move++;
+      } else if (!gameDiv.textContent && turn === "player 2" && !victor) {
         gameDiv.textContent = "O";
-        gameDiv.setAttribute("data-fill", "player 2");
         player2Arr.push(gameDiv.getAttribute("data-position"));
         turn = "player 1";
-        round++;
+        move++;
       }
-      if (round >= 3) { /* need to change this to round for each person instead */
+      if (move >= 5) {
         if (checkAllPatterns(winningPatterns, player1Arr)) {
           victor = "Player 1";
           console.log(victor + " Won")
+          gameBoardModule.displayWinner(victorPattern);
+          
         } else if (checkAllPatterns(winningPatterns, player2Arr)) {
           victor = "Player 2";
           console.log(victor) + " Won";
-        } else {
-          console.log("whyyy")
+          gameBoardModule.displayWinner(victorPattern);
+        } else if (player1Arr.length === 5) {
+          victor = "Tie";
+          console.log("Tie")
         }
-       
-       /* 
-       console.log(checkAllPatterns(winningPatterns, player1Arr));
-       checkAllPatterns(winningPatterns, player2Arr); */
       }
     });
   });
-
-
-  return { turn };
+  return {  }
 })();
+
+console.log(displayController.victor);
+
 
 const Player = (playerName) => {
   const name = playerName;
