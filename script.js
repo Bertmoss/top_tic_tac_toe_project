@@ -4,6 +4,9 @@
 const gameBoardModule = (() => {
   const gameBoardArr = [];
   const _container = document.querySelector(".container");
+  const _nameContainer1 = document.querySelector(".player-1-container");
+  const _nameContainer2 = document.querySelector(".player-2-container");
+  
 
   /* creates a grid cell */
   function _createGameDiv() {
@@ -25,6 +28,8 @@ const gameBoardModule = (() => {
       _container.appendChild(div);
     }
   }
+  displayGameDivs();
+  /*displays a green border around the winning pattern */
   function displayWinner(winArr) {
     for (let div of gameBoardArr) {
      if (winArr.includes(div.getAttribute("data-position"))) {
@@ -32,16 +37,22 @@ const gameBoardModule = (() => {
       }
     }
   }
-
+  /* display player names*/
+  function displayPlayerNames(playerName1, playerName2) {
+    _nameContainer1.textContent = `Player 1: ${playerName1}`;
+    _nameContainer2.textContent = `Player 2: ${playerName2}`;
+  }
+  /* display player turn */
+  
 
   return {
     displayGameDivs: displayGameDivs,
     gameBoardArr: gameBoardArr,
     displayWinner: displayWinner,
+    displayPlayerNames,
   };
 })();
 
-gameBoardModule.displayGameDivs();
 
 
 
@@ -55,6 +66,10 @@ const displayController = (() => {
   const player1Arr = [];
   const player2Arr = [];
   let move = 0;
+  const nameInput1 = document.querySelector("#player-1-name");
+  const nameInput2 = document.querySelector("#player-2-name");
+  const playerNamesBtn = document.querySelector("#sub-btn");
+
   const winningPatterns = {
     row1: [
       "0","1","2",
@@ -125,10 +140,15 @@ const displayController = (() => {
       }
     });
   });
+  playerNamesBtn.addEventListener("click", () => {
+    let player1 = Player(nameInput1.value);
+    let player2 = Player(nameInput2.value);
+    gameBoardModule.displayPlayerNames(player1.name, player2.name);
+
+
+  })
   return {  }
 })();
-
-console.log(displayController.victor);
 
 
 const Player = (playerName) => {
@@ -145,28 +165,6 @@ console.log(John);
 let John2 = Player("John2");
 console.log(John2);
 
-/* The general idea is that the player will click on any of the divs and then the opponent will choose a random num from the empty divs arr 
-and will add text content to the div with the corresponding data-position  */
-/* 
 
 
 
-//GameDiv listener
-/* gameDiv.addEventListener("click", () => {
-  if (!gameDiv.textContent) {
-    let thisDiv =
-      gameDiv.getAttribute(
-        "data-position"
-      ); //locates the div that was clicked 
-    let position = gameBoard.emptyDivsArr.indexOf(
-      +thisDiv
-    ); // finds the number of the div that was clicked in Empty divs 
-    gameDiv.textContent = "X";
-    gameBoard.emptyDivsArr.splice(
-      position,
-      1
-    ); //removes the div that was clicked from Empty divs  
-  }
-});
-gameBoard.emptyDivsArr.push(gameBoard.gameBoardArr.length);
- */
