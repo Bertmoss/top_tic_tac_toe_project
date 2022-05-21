@@ -43,7 +43,7 @@ const gameBoardModule = (() => {
     _nameContainer2.textContent = `Player 2: ${playerName2}`;
   }
   /* display player turn */
-  
+
 
   return {
     displayGameDivs: displayGameDivs,
@@ -69,6 +69,7 @@ const displayController = (() => {
   const nameInput1 = document.querySelector("#player-1-name");
   const nameInput2 = document.querySelector("#player-2-name");
   const playerNamesBtn = document.querySelector("#sub-btn");
+  const form = document.querySelector("form");
 
   const winningPatterns = {
     row1: [
@@ -141,9 +142,12 @@ const displayController = (() => {
     });
   });
   playerNamesBtn.addEventListener("click", () => {
+    if (nameInput1.value && nameInput2.value) {
     let player1 = Player(nameInput1.value);
     let player2 = Player(nameInput2.value);
     gameBoardModule.displayPlayerNames(player1.name, player2.name);
+    form.classList.add("hidden");
+    }
 
 
   })

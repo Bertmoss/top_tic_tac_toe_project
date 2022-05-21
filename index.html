@@ -9,19 +9,19 @@
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
-    <form action="" method="get">
+    <form action="javascript:void(0)" method="get">
       <label for="player-1-name">
         Player 1:
-        <input type="text" id="player-1-name" name="player-1-name"/>
+        <input type="text" id="player-1-name" name="player-1-name" required/>
       </label>
       <label for="player-2-name">
         Player 2:
-        <input type="text" id="player-2-name" name="player-2-name"/>
-        <button type="button" id="sub-btn">Submit</button>
+        <input type="text" id="player-2-name" name="player-2-name" required/>
+        <button type="submit" id="sub-btn">Submit</button>
       </label>
     </form>
-    <div class="player-1-container"></div>
+    <div class="player-1-container player-container"></div>
     <div class="container"></div>
-    <div class="player-2-container"></div>
+    <div class="player-2-container player-container"></div>
   </body>
 </html>

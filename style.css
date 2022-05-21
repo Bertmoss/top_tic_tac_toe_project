@@ -1,5 +1,5 @@
 .container {
-  margin: 100px auto;
+  margin: 50px auto;
   height: 500px;
   width: 500px;
   display: grid;
@@ -11,4 +11,12 @@
 }
 .win-div {
   border: 5px green solid;
+}
+.hidden {
+  display: none;
+}
+.player-container {
+  width: 500px;
+  margin: 50px auto;
+  text-align: center;
 }
