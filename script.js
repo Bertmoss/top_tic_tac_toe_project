@@ -28,7 +28,7 @@ const gameBoardModule = (() => {
       _container.appendChild(div);
     }
   }
-  displayGameDivs();
+ /*  displayGameDivs(); */
   /*displays a green border around the winning pattern */
   function displayWinner(winArr) {
     for (let div of gameBoardArr) {
@@ -43,6 +43,15 @@ const gameBoardModule = (() => {
     _nameContainer2.textContent = `Player 2: ${playerName2}`;
   }
   /* display player turn */
+  function displayTurn(turn) {
+    if (turn == "player 1") {
+      _nameContainer1.classList.add("turn");
+      _nameContainer2.classList.remove("turn");
+    } else {
+      _nameContainer2.classList.add("turn");
+      _nameContainer1.classList.remove("turn");
+    }
+  }
 
 
   return {
@@ -50,6 +59,7 @@ const gameBoardModule = (() => {
     gameBoardArr: gameBoardArr,
     displayWinner: displayWinner,
     displayPlayerNames,
+    displayTurn,
   };
 })();
 
@@ -62,7 +72,7 @@ const displayController = (() => {
   let turn = "player 1";
   let victor;
   let victorPattern; 
-  const _gameDivs = document.querySelectorAll(".game-div");
+  let _gameDivs;
   const player1Arr = [];
   const player2Arr = [];
   let move = 0;
@@ -111,45 +121,51 @@ const displayController = (() => {
     })
     return check;
   }
-  _gameDivs.forEach((gameDiv) => {
-    gameDiv.addEventListener("click", () => {
-      if (!gameDiv.textContent && turn === "player 1" && !victor) {
-        gameDiv.textContent = "X";
-        player1Arr.push(gameDiv.getAttribute("data-position"));
-        turn = "player 2";
-        move++;
-      } else if (!gameDiv.textContent && turn === "player 2" && !victor) {
-        gameDiv.textContent = "O";
-        player2Arr.push(gameDiv.getAttribute("data-position"));
-        turn = "player 1";
-        move++;
-      }
-      if (move >= 5) {
-        if (checkAllPatterns(winningPatterns, player1Arr)) {
-          victor = "Player 1";
-          console.log(victor + " Won")
-          gameBoardModule.displayWinner(victorPattern);
-          
-        } else if (checkAllPatterns(winningPatterns, player2Arr)) {
-          victor = "Player 2";
-          console.log(victor) + " Won";
-          gameBoardModule.displayWinner(victorPattern);
-        } else if (player1Arr.length === 5) {
-          victor = "Tie";
-          console.log("Tie")
-        }
-      }
-    });
-  });
+ 
   playerNamesBtn.addEventListener("click", () => {
     if (nameInput1.value && nameInput2.value) {
     let player1 = Player(nameInput1.value);
     let player2 = Player(nameInput2.value);
     gameBoardModule.displayPlayerNames(player1.name, player2.name);
     form.classList.add("hidden");
+    gameBoardModule.displayGameDivs();
+    
+    _gameDivs = document.querySelectorAll(".game-div");
+   
+
+    _gameDivs.forEach((gameDiv) => {
+      gameDiv.addEventListener("click", () => {
+        if (!gameDiv.textContent && turn === "player 1" && !victor) {
+          gameDiv.textContent = "X";
+          player1Arr.push(gameDiv.getAttribute("data-position"));
+          turn = "player 2";
+          gameBoardModule.displayTurn(turn);
+          move++;
+        } else if (!gameDiv.textContent && turn === "player 2" && !victor) {
+          gameDiv.textContent = "O";
+          player2Arr.push(gameDiv.getAttribute("data-position"));
+          turn = "player 1";
+          gameBoardModule.displayTurn(turn);
+          move++;
+        }
+        if (move >= 5) {
+          if (checkAllPatterns(winningPatterns, player1Arr)) {
+            victor = "Player 1";
+            console.log(victor + " Won")
+            gameBoardModule.displayWinner(victorPattern);
+            
+          } else if (checkAllPatterns(winningPatterns, player2Arr)) {
+            victor = "Player 2";
+            console.log(victor) + " Won";
+            gameBoardModule.displayWinner(victorPattern);
+          } else if (player1Arr.length === 5) {
+            victor = "Tie";
+            console.log("Tie")
+          }
+        }
+      });
+    });
     }
-
-
   })
   return {  }
 })();
