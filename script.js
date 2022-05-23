@@ -2,7 +2,7 @@
 
 /* GAMEBOARD */
 const gameBoardModule = (() => {
-  const gameBoardArr = [];
+  let gameBoardArr = [];
   const _container = document.querySelector(".container");
   const _nameContainer1 = document.querySelector(".player-1-container");
   const _nameContainer2 = document.querySelector(".player-2-container");
@@ -28,7 +28,14 @@ const gameBoardModule = (() => {
       _container.appendChild(div);
     }
   }
- /*  displayGameDivs(); */
+  /* removes the grid cells from DOM and clears gameBoard Arr */
+  function removeGameDivs() {
+    for (let div of gameBoardArr) {
+      _container.removeChild(div);
+    }
+    gameBoardArr = [];
+
+  }
   /*displays a green border around the winning pattern */
   function displayWinner(winArr) {
     for (let div of gameBoardArr) {
@@ -39,8 +46,18 @@ const gameBoardModule = (() => {
   }
   /* display player names*/
   function displayPlayerNames(playerName1, playerName2) {
+    _nameContainer1.classList.remove("hidden");
+    _nameContainer2.classList.remove("hidden");
     _nameContainer1.textContent = `Player 1: ${playerName1}`;
     _nameContainer2.textContent = `Player 2: ${playerName2}`;
+  }
+  function removePlayerNames() {
+    _nameContainer1.textContent = "";
+    _nameContainer2.textContent = "";
+    _nameContainer1.classList.add("hidden");
+    _nameContainer2.classList.add("hidden");
+    _nameContainer1.classList.remove("win-div", "turn");
+    _nameContainer2.classList.remove("win-div", "turn");
   }
   /* display player turn and victor */
   function displayTurn(turn, victor, player1, player2) {
@@ -74,6 +91,8 @@ const gameBoardModule = (() => {
     displayWinner: displayWinner,
     displayPlayerNames,
     displayTurn,
+    removeGameDivs,
+    removePlayerNames,
   };
 })();
 
@@ -87,13 +106,16 @@ const displayController = (() => {
   let victor;
   let victorPattern; 
   let _gameDivs;
-  const player1Arr = [];
-  const player2Arr = [];
+  let player1Arr = [];
+  let player2Arr = [];
   let move = 0;
+  let player1;
+  let player2;
   const nameInput1 = document.querySelector("#player-1-name");
   const nameInput2 = document.querySelector("#player-2-name");
   const playerNamesBtn = document.querySelector("#sub-btn");
   const form = document.querySelector("form");
+  const resetDiv = document.querySelector(".reset");
 
   const winningPatterns = {
     row1: [
@@ -138,8 +160,8 @@ const displayController = (() => {
  
   playerNamesBtn.addEventListener("click", () => {
     if (nameInput1.value && nameInput2.value) {
-    let player1 = Player(nameInput1.value);
-    let player2 = Player(nameInput2.value);
+    player1 = Player(nameInput1.value);
+    player2 = Player(nameInput2.value);
     gameBoardModule.displayPlayerNames(player1.name, player2.name);
     form.classList.add("hidden");
     gameBoardModule.displayGameDivs();
@@ -168,17 +190,19 @@ const displayController = (() => {
             victor = "player 1";
             console.log(victor + " Won")
             gameBoardModule.displayWinner(victorPattern);
-
             gameBoardModule.displayTurn(turn, victor, player1.name, player2.name);
+            showResetBtn();
             
           } else if (checkAllPatterns(winningPatterns, player2Arr)) {
             victor = "player 2";
             console.log(victor) + " Won";
             gameBoardModule.displayWinner(victorPattern);
             gameBoardModule.displayTurn(turn, victor, player1.name, player2.name);
+            showResetBtn();
           } else if (player1Arr.length === 5) {
             victor = "tie";
             gameBoardModule.displayTurn(turn, victor, player1.name, player2.name);
+            showResetBtn();
             
             console.log("Tie")
           }
@@ -187,20 +211,44 @@ const displayController = (() => {
     });
     }
   })
-
-
+  function showResetBtn() {
+    const resetBtn = document.querySelector(".reset");
+    resetBtn.classList.remove("hidden");
+    
+    resetBtn.addEventListener("click", () => {
+      turn = "player 1";
+      victor = false;
+      victorPattern = false; 
+      player1Arr = []
+      player2Arr = [];
+      move = 0;
+      player1 = "";
+      player2 = "";
+      nameInput1.value = "";
+      nameInput2.value = "";
+      form.classList.remove("hidden");
+      gameBoardModule.removeGameDivs();
+      gameBoardModule.removePlayerNames();
+      resetBtn.classList.add('hidden');
+     
+    })
+  }
   return {  }
 })();
 
 
 const Player = (playerName) => {
   const name = playerName;
+  
 
   return {
     name,
   };
 };
 
-
+let testArr = [1,2, 3];
+console.log(testArr)
+testArr = [];
+console.log(testArr)
 
 
