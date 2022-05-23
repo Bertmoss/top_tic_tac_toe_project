@@ -1,9 +1,18 @@
+body {
+  margin: 20px;
+  padding: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 20px;
+  
+}
 .container {
-  margin: 50px auto;
-  height: 500px;
-  width: 500px;
+  height: 300px;
+  width: 300px;
   display: grid;
-  grid-template: repeat(3, minmax(25px, 1fr)) / repeat(3, minmax(25px, 1fr));
+  grid-template: repeat(3, minmax(15px, 1fr)) / repeat(3, minmax(15px, 1fr));
   gap: 0px;
 }
 .game-div {
@@ -16,10 +25,28 @@
   display: none;
 }
 .player-container {
-  width: 500px;
-  margin: 50px auto;
+  width: 200px;
+  padding: 25px;
   text-align: center;
+  /* border: 2px solid black; */ /* The issue is this  */
+  border-radius: 25px;
 }
 .turn {
-  border: 5px solid orange;
+  border: 2px solid orange;
+}
+.filter-green {
+  filter: invert(36%) sepia(76%) saturate(1611%) hue-rotate(92deg) brightness(104%) contrast(103%);
+}
+.reset {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100px;
+  height: 50px;
+  border-radius: 25px;
+  border: 1px solid black;
+  background-color: white;
+
+}
+.reset:hover {
+  border: 5px solid black;
 }
