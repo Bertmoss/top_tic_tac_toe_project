@@ -52,6 +52,12 @@ const gameBoardModule = (() => {
       _nameContainer2.classList.add("win-div");
       _nameContainer2.textContent= `Congratulations ${player2}! You've won!`
       _nameContainer1.classList.remove("turn");
+    } else if (victor == "tie") {
+      _nameContainer2.classList.add("win-div");
+      _nameContainer1.classList.add("win-div");
+      _nameContainer2.textContent= `Congratulations ${player2}! It's a tie!`
+      _nameContainer1.textContent= `Congratulations ${player1}! It's a tie!`
+      _nameContainer2.classList.remove("turn");
     } else if (turn == "player 1") {
       _nameContainer1.classList.add("turn");
       _nameContainer2.classList.remove("turn");
@@ -171,7 +177,9 @@ const displayController = (() => {
             gameBoardModule.displayWinner(victorPattern);
             gameBoardModule.displayTurn(turn, victor, player1.name, player2.name);
           } else if (player1Arr.length === 5) {
-            victor = "Tie";
+            victor = "tie";
+            gameBoardModule.displayTurn(turn, victor, player1.name, player2.name);
+            
             console.log("Tie")
           }
         }
@@ -179,6 +187,8 @@ const displayController = (() => {
     });
     }
   })
+
+
   return {  }
 })();
 
@@ -190,12 +200,6 @@ const Player = (playerName) => {
     name,
   };
 };
-
-let John = Player("John");
-console.log(John);
-
-let John2 = Player("John2");
-console.log(John2);
 
 
 
