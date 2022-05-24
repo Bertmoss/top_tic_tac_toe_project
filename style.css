@@ -37,7 +37,7 @@ body {
 .filter-green {
   filter: invert(36%) sepia(76%) saturate(1611%) hue-rotate(92deg) brightness(104%) contrast(103%);
 }
-.reset {
+button {
   -webkit-appearance: none;
   appearance: none;
   width: 100px;
@@ -47,9 +47,36 @@ body {
   background-color: white;
 
 }
-.reset:hover {
-  border: 5px solid black;
+button:hover {
+  border: 2px solid black;
+  width: 97px;
+  height: 47px;
 }
 h4, p {
   margin: 5px;
+}
+form {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  gap: 50px;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding-top: 50px;
+}
+label {
+  text-align: center;
+}
+input {
+  margin-top: 10px;
+}
+
+form button {
+  position: absolute;
+  bottom: 50px;
+  
 }

@@ -2,7 +2,7 @@
 
 /* GAMEBOARD */
 const gameBoardModule = (() => {
-  let gameBoardArr = [];
+  let _gameBoardArr = [];
   const _container = document.querySelector(".container");
   const _nameContainer1 = document.querySelector(".player-1-container");
   const _nameContainer2 = document.querySelector(".player-2-container");
@@ -11,8 +11,8 @@ const gameBoardModule = (() => {
   function _createGameDiv() {
     const gameDiv = document.createElement("div");
     gameDiv.classList.add("game-div");
-    gameDiv.setAttribute("data-position", gameBoardArr.length);
-    gameBoardArr.push(gameDiv);
+    gameDiv.setAttribute("data-position", _gameBoardArr.length);
+    _gameBoardArr.push(gameDiv);
   }
   /* creates all the grid cells */
   function _createAllGameDivs() {
@@ -23,20 +23,20 @@ const gameBoardModule = (() => {
   /* appends the grid cells to the DOM */
   function displayGameDivs() {
     _createAllGameDivs();
-    for (let div of gameBoardArr) {
+    for (let div of _gameBoardArr) {
       _container.appendChild(div);
     }
   }
   /* removes the grid cells from DOM and clears gameBoard Arr */
   function removeGameDivs() {
-    for (let div of gameBoardArr) {
+    for (let div of _gameBoardArr) {
       _container.removeChild(div);
     }
-    gameBoardArr = [];
+    _gameBoardArr = [];
   }
   /*displays a green border around the winning pattern */
   function displayWinner(winArr) {
-    for (let div of gameBoardArr) {
+    for (let div of _gameBoardArr) {
       if (winArr.includes(div.getAttribute("data-position"))) {
         div.classList.add("filter-green");
       }
@@ -62,9 +62,9 @@ const gameBoardModule = (() => {
   function displayVictor(winningContainer, losingContainer, winner) {
     winningContainer.classList.add("win-div");
     winningContainer.textContent = "";
-    
+
     let congrats = document.createElement("h4");
-    congrats.textContent ="Congratulations!"
+    congrats.textContent = "Congratulations!";
     winningContainer.appendChild(congrats);
 
     let message = document.createElement("p");
@@ -76,7 +76,6 @@ const gameBoardModule = (() => {
 
   /* display player turn and victor */
   function displayTurn(turn, victor, player1, player2) {
-    
     if (victor == "player 1") {
       displayVictor(_nameContainer1, _nameContainer2, player1);
     } else if (victor == "player 2") {
@@ -98,7 +97,6 @@ const gameBoardModule = (() => {
 
   return {
     displayGameDivs: displayGameDivs,
-    gameBoardArr: gameBoardArr,
     displayWinner: displayWinner,
     displayPlayerNames,
     displayTurn,
