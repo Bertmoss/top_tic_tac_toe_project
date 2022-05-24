@@ -57,21 +57,35 @@ const gameBoardModule = (() => {
     _nameContainer1.classList.remove("win-div", "turn");
     _nameContainer2.classList.remove("win-div", "turn");
   }
+
+  /* Display winning message and stylizeit*/
+  function displayVictor(winningContainer, losingContainer, winner) {
+    winningContainer.classList.add("win-div");
+    winningContainer.textContent = "";
+    
+    let congrats = document.createElement("h4");
+    congrats.textContent ="Congratulations!"
+    winningContainer.appendChild(congrats);
+
+    let message = document.createElement("p");
+    message.textContent = `${winner} won!`;
+    winningContainer.appendChild(message);
+
+    losingContainer.classList.remove("turn");
+  }
+
   /* display player turn and victor */
   function displayTurn(turn, victor, player1, player2) {
+    
     if (victor == "player 1") {
-      _nameContainer1.classList.add("win-div");
-      _nameContainer1.textContent = `Congratulations ${player1}! You've won!`;
-      _nameContainer2.classList.remove("turn");
+      displayVictor(_nameContainer1, _nameContainer2, player1);
     } else if (victor == "player 2") {
-      _nameContainer2.classList.add("win-div");
-      _nameContainer2.textContent = `Congratulations ${player2}! You've won!`;
-      _nameContainer1.classList.remove("turn");
+      displayVictor(_nameContainer2, _nameContainer1, player2);
     } else if (victor == "tie") {
       _nameContainer2.classList.add("win-div");
       _nameContainer1.classList.add("win-div");
-      _nameContainer2.textContent = `Congratulations ${player2}! It's a tie!`;
-      _nameContainer1.textContent = `Congratulations ${player1}! It's a tie!`;
+      _nameContainer2.textContent = `It's a tie!`;
+      _nameContainer1.textContent = `It's a tie!`;
       _nameContainer2.classList.remove("turn");
     } else if (turn == "player 1") {
       _nameContainer1.classList.add("turn");

@@ -19,7 +19,7 @@ body {
   border: 1px black solid;
 }
 .win-div {
-  border: 5px green solid;
+  border: 5px green solid !important;
 }
 .hidden {
   display: none;
@@ -28,7 +28,7 @@ body {
   width: 200px;
   padding: 25px;
   text-align: center;
-  /* border: 2px solid black; */ /* The issue is this  */
+  border: 2px solid black;  /* The issue is this  */
   border-radius: 25px;
 }
 .turn {
@@ -49,4 +49,7 @@ body {
 }
 .reset:hover {
   border: 5px solid black;
+}
+h4, p {
+  margin: 5px;
 }
