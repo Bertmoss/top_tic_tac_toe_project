@@ -75,12 +75,12 @@ const gameBoardModule = (() => {
   }
 
   /* display player turn and victor */
-  function displayTurn(turn, victor, player1, player2) {
-    if (victor == "player 1") {
-      displayVictor(_nameContainer1, _nameContainer2, player1);
-    } else if (victor == "player 2") {
-      displayVictor(_nameContainer2, _nameContainer1, player2);
-    } else if (victor == "tie") {
+  function displayTurn(turn, player1, player2) {
+    if (player1.victor== "player 1") {
+      displayVictor(_nameContainer1, _nameContainer2, player1.name);
+    } else if (player2.victor == "player 2") {
+      displayVictor(_nameContainer2, _nameContainer1, player2.name);
+    } else if (player1.victor == "tie") {
       _nameContainer2.classList.add("win-div");
       _nameContainer1.classList.add("win-div");
       _nameContainer2.textContent = `It's a tie!`;
@@ -108,22 +108,14 @@ const gameBoardModule = (() => {
 /* DISPLAY FUNCTIONALITY */
 
 const displayController = (() => {
-  let turn = "player 1";
-  let victor;
-  let victorPattern;
-  let _gameDivs;
-  let player1Arr = [];
-  let player2Arr = [];
-  let move = 0;
-  let player1;
-  let player2;
-  const nameInput1 = document.querySelector("#player-1-name");
-  const nameInput2 = document.querySelector("#player-2-name");
-  const playerNamesBtn = document.querySelector("#sub-btn");
-  const form = document.querySelector("form");
-  const resetDiv = document.querySelector(".reset");
+  let _turn = "player 1";
+  let _move = 0;
 
-  const winningPatterns = {
+  let _player1;
+  let _player2;
+  /* Pattern that won, and arrays of all wining patterns */
+  let _victorPattern;
+  const _winningPatterns = {
     row1: ["0", "1", "2"],
     row2: ["3", "4", "5"],
     row3: ["6", "7", "8"],
@@ -133,139 +125,152 @@ const displayController = (() => {
     diagonal1: ["0", "4", "8"],
     diagonal2: ["2", "4", "6"],
   };
-  function victoryCheck(winningPattern, playerArr) {
+  let _gameDivs;
+
+  const _nameInput1 = document.querySelector("#player-1-name");
+  const _nameInput2 = document.querySelector("#player-2-name");
+  const _playerNamesBtn = document.querySelector("#sub-btn");
+  const _form = document.querySelector("form");
+  const _resetBtn = document.querySelector(".reset")
+
+  /* Checks if a one winning pattern has been made */
+  function _victoryCheck(winningPattern, playerArr) {
     return winningPattern.every((i) => playerArr.includes(i));
   }
-  function checkAllPatterns(object, playerArr) {
+  /* checks all the winning patterns to see if one of the player arrays has numbers necessary to win */
+  function _checkAllPatterns(object, playerArr) {
     let values = Object.values(object);
     let check = false;
     values.forEach((value) => {
-      if (victoryCheck(value, playerArr)) {
-        victorPattern = value;
+      if (_victoryCheck(value, playerArr)) {
+        _victorPattern = value;
         return (check = true);
       }
     });
     return check;
   }
 
-  playerNamesBtn.addEventListener("click", () => {
-    if (nameInput1.value && nameInput2.value) {
-      player1 = Player(nameInput1.value);
-      player2 = Player(nameInput2.value);
-      gameBoardModule.displayPlayerNames(player1.name, player2.name);
-      form.classList.add("hidden");
+  /* changes the turn and counts the move */
+  function _changeTurnMove() {
+    _move++
+    if (_turn === "player 1") {
+      _turn = "player 2";
+    } else {
+      _turn = "player 1"
+    }
+  }
+  /* Checks for winner and displays the winning pattern on the board + plus the winning message */
+  function _checkForWinner() {
+    if (_move >= 5) {
+      if (_checkAllPatterns(_winningPatterns, _player1.playerArr)) {
+        _player1.victor = "player 1";
+        gameBoardModule.displayWinner(_victorPattern);
+        gameBoardModule.displayTurn(
+          _turn,
+          _player1,
+          _player2
+        );
+        _showResetBtn();
+      } else if (_checkAllPatterns(_winningPatterns, _player2.playerArr)) {
+        _player2.victor = "player 2";
+        gameBoardModule.displayWinner(_victorPattern);
+        gameBoardModule.displayTurn(
+          _turn,
+          _player1,
+          _player2
+        );
+        _showResetBtn();
+      } else if (_player1.playerArr.length === 5) {
+        _player1.victor = "tie";
+        gameBoardModule.displayTurn(
+          _turn,
+          _player1,
+          _player2
+        );
+        _showResetBtn();
+      }
+    }
+  }
+/* Submits the names of the players */
+  _playerNamesBtn.addEventListener("click", () => {
+    if (_nameInput1.value && _nameInput2.value) {
+      _player1 = Player(_nameInput1.value);
+      _player2 = Player(_nameInput2.value);
+      gameBoardModule.displayPlayerNames(_player1.name, _player2.name);
+      _form.classList.add("hidden");
       gameBoardModule.displayGameDivs();
-      gameBoardModule.displayTurn(turn, victor, player1.name, player2.name);
-
+      gameBoardModule.displayTurn(_turn, _player1, _player2);
+    /* Checks if a div is empty and if not places the correct player image there */
       _gameDivs = document.querySelectorAll(".game-div");
       _gameDivs.forEach((gameDiv) => {
         gameDiv.addEventListener("click", () => {
           if (
             !gameDiv.getAttribute("style", "background") &&
-            turn === "player 1" &&
-            !victor
+            _turn === "player 1" &&
+            (!_player1.victor || !_player2.victor)
           ) {
             gameDiv.setAttribute(
               "style",
               "background: url(/images/X-SVG.svg); background-size: 70%; background-position: center; background-repeat: no-repeat"
             );
-            player1Arr.push(gameDiv.getAttribute("data-position"));
-            turn = "player 2";
+            _player1.playerArr.push(gameDiv.getAttribute("data-position"));
+            _changeTurnMove();
             gameBoardModule.displayTurn(
-              turn,
-              victor,
-              player1.name,
-              player2.name
+              _turn,
+              _player1.name,
+              _player2.name
             );
-            move++;
           } else if (
             !gameDiv.getAttribute("style", "background") &&
-            turn === "player 2" &&
-            !victor
+            _turn === "player 2" &&
+            (!_player1.victor || !_player2.victor)
           ) {
             gameDiv.setAttribute(
               "style",
               "background: url(/images/0-SVG.svg); background-size: 70%; background-position: center; background-repeat: no-repeat"
             );
-            player2Arr.push(gameDiv.getAttribute("data-position"));
-            turn = "player 1";
+            _player2.playerArr.push(gameDiv.getAttribute("data-position"));
+            _changeTurnMove();
             gameBoardModule.displayTurn(
-              turn,
-              victor,
-              player1.name,
-              player2.name
+              _turn,
+              _player1.name,
+              _player2.name
             );
-            move++;
-          }
-          if (move >= 5) {
-            if (checkAllPatterns(winningPatterns, player1Arr)) {
-              victor = "player 1";
-              gameBoardModule.displayWinner(victorPattern);
-              gameBoardModule.displayTurn(
-                turn,
-                victor,
-                player1.name,
-                player2.name
-              );
-              showResetBtn();
-            } else if (checkAllPatterns(winningPatterns, player2Arr)) {
-              victor = "player 2";
-              gameBoardModule.displayWinner(victorPattern);
-              gameBoardModule.displayTurn(
-                turn,
-                victor,
-                player1.name,
-                player2.name
-              );
-              showResetBtn();
-            } else if (player1Arr.length === 5) {
-              victor = "tie";
-              gameBoardModule.displayTurn(
-                turn,
-                victor,
-                player1.name,
-                player2.name
-              );
-              showResetBtn();
-            }
-          }
+          };
+          _checkForWinner();
         });
       });
     }
-  });
-  function showResetBtn() {
-    const resetBtn = document.querySelector(".reset");
-    resetBtn.classList.remove("hidden");
-
-    resetBtn.addEventListener("click", () => {
-      turn = "player 1";
-      victor = false;
-      victorPattern = false;
-      player1Arr = [];
-      player2Arr = [];
-      move = 0;
-      player1 = "";
-      player2 = "";
-      nameInput1.value = "";
-      nameInput2.value = "";
-      form.classList.remove("hidden");
-      gameBoardModule.removeGameDivs();
-      gameBoardModule.removePlayerNames();
-      resetBtn.classList.add("hidden");
-    });
+  })
+  /* RESET BUTTON */
+  function _useResetBtn() {
+    _turn = "player 1";
+    _victorPattern = false;
+    _move = 0;
+    _player1 = "";
+    _player2 = "";
+    _nameInput1.value = "";
+    _nameInput2.value = "";
+    _form.classList.remove("hidden");
+    gameBoardModule.removeGameDivs();
+    gameBoardModule.removePlayerNames();
+    _resetBtn.classList.add("hidden");
+  }
+  function _showResetBtn() {;
+    _resetBtn.classList.remove("hidden");
+    _resetBtn.addEventListener("click", _useResetBtn);
   }
   return {};
 })();
 
+
+/* PLAYER MODULE */
 const Player = (playerName) => {
   const name = playerName;
-
+  let playerArr = [];
+  let victor;
   return {
-    name,
+    name, playerArr, victor,
   };
 };
 
-let testArr = [1, 2, 3];
-console.log(testArr);
-testArr = [];
-console.log(testArr);
