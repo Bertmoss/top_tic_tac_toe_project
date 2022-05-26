@@ -1,3 +1,8 @@
+:root {
+  --win-color: green;
+  --turn-color: orange;
+  --regular-color: black;
+}
 body {
   margin: 20px;
   padding: 0px;
@@ -16,10 +21,10 @@ body {
   gap: 0px;
 }
 .game-div {
-  border: 1px black solid;
+  border: 1px solid var(--regular-color);
 }
 .win-div {
-  border: 5px green solid !important;
+  border: 5px var(--win-color) !important;
 }
 .hidden {
   display: none;
@@ -28,12 +33,12 @@ body {
   width: 200px;
   padding: 25px;
   text-align: center;
-  border: 2px solid black;
+  border: 2px solid var(--regular-color);
   border-radius: 25px;
   overflow-wrap: break-word;
 }
 .turn {
-  border: 2px solid orange;
+  border: 2px solid var(--turn-color);
 }
 .filter-green {
   filter: invert(36%) sepia(76%) saturate(1611%) hue-rotate(92deg) brightness(104%) contrast(103%);
@@ -44,12 +49,12 @@ button {
   width: 100px;
   height: 50px;
   border-radius: 25px;
-  border: 1px solid black;
+  border: 1px solid var(--regular-color);
   background-color: white;
 
 }
 button:hover {
-  border: 2px solid black;
+  border: 2px solid var(--regular-color);
   width: 97px;
   height: 47px;
 }
@@ -65,7 +70,7 @@ form {
   justify-content: start;
   align-items: center;
   gap: 50px;
-  border: 1px solid black;
+  border: 1px solid var(--regular-color);
   border-radius: 10px;
   padding-top: 50px;
 }
