@@ -6,9 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tit Tac Toe Game</title>
     <script src="/script.js" defer></script>
-    <link rel="stylesheet" href="/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Permanent+Marker&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/style.css"/>
   </head>
   <body>
+    <header>
+      <h1>Tic-Tac-Toe</h1>
+    </header>
+    <main>
+    <div class="mid-div">
     <form action="javascript:void(0)" method="get">
       <label for="player-1-name">
         Player 1<br>
@@ -24,5 +33,7 @@
     <div class="container"></div>
     <div class="player-2-container player-container hidden"></div>
     <button type="button" class="reset hidden">RESET</button>
+  </div>
+  </main>
   </body>
 </html>

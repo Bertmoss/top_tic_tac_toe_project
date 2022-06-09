@@ -2,16 +2,37 @@
   --win-color: green;
   --turn-color: orange;
   --regular-color: black;
+  --accent-color: #8ecae6;
+  --background-color: white;
+  width: 100vw;
+  height: 100vh;
+  font-family: "Caveat", cursive;
 }
+header {
+  height: 15vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+h1 {
+  margin: 0px;
+  font-family: "Permanent Marker", cursive;
+}
+
 body {
-  margin: 20px;
+  box-sizing: border-box;
+  margin: 0px;
   padding: 0px;
+}
+main {
+  height: 85vh;
+}
+.mid-div {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
   gap: 20px;
-  
 }
 .container {
   height: 300px;
@@ -20,11 +41,14 @@ body {
   grid-template: repeat(3, minmax(15px, 1fr)) / repeat(3, minmax(15px, 1fr));
   gap: 0px;
 }
+.container {
+  background: none;
+}
 .game-div {
   border: 1px solid var(--regular-color);
 }
 .win-div {
-  border: 5px var(--win-color) !important;
+  border: 5px var(--win-color) solid !important;
 }
 .hidden {
   display: none;
@@ -33,32 +57,35 @@ body {
   width: 200px;
   padding: 25px;
   text-align: center;
-  border: 2px solid var(--regular-color);
+  border: 2px solid var(--accent-color, black);
   border-radius: 25px;
   overflow-wrap: break-word;
+  background-color: var(--background-color, white);
 }
 .turn {
   border: 2px solid var(--turn-color);
 }
 .filter-green {
-  filter: invert(36%) sepia(76%) saturate(1611%) hue-rotate(92deg) brightness(104%) contrast(103%);
+  filter: brightness(0) saturate(100%) invert(36%) sepia(76%) saturate(1611%)
+    hue-rotate(92deg) brightness(104%) contrast(103%);
 }
 button {
   -webkit-appearance: none;
   appearance: none;
+  font-family: "Caveat", cursive;
   width: 100px;
   height: 50px;
   border-radius: 25px;
   border: 1px solid var(--regular-color);
-  background-color: white;
-
+  background-color: var(--accent-color, black);
 }
 button:hover {
   border: 2px solid var(--regular-color);
   width: 97px;
   height: 47px;
 }
-h4, p {
+h4,
+p {
   margin: 5px;
 }
 form {
@@ -70,15 +97,18 @@ form {
   justify-content: start;
   align-items: center;
   gap: 50px;
-  border: 1px solid var(--regular-color);
+  border: 5px solid var(--accent-color, black);
   border-radius: 10px;
   padding-top: 50px;
+  background-color: var(--background-color, white);
+  font-size: 24px;
 }
 label {
   text-align: center;
 }
 input {
   margin-top: 10px;
+  border: 5px solid var(--accent-color, black);
 }
 
 form button {
@@ -86,12 +116,11 @@ form button {
   bottom: 50px;
 }
 
-@media screen and (min-width:1000px) {
-  body {
+@media screen and (min-width: 1000px) {
+  .mid-div {
     position: relative;
-    margin: 7%;
     display: grid;
-    grid-template-columns: repeat(2,minmax(50px, 1fr));
+    grid-template-columns: repeat(2, minmax(50px, 1fr));
     grid-template-rows: repeat(3, minmax(50px, 1fr));
     justify-items: end;
     align-items: center;
@@ -99,7 +128,7 @@ form button {
     row-gap: 2px;
   }
   .player-container {
-    grid-column: 1/2
+    grid-column: 1/2;
   }
   .container {
     grid-column: 2/3;
@@ -118,6 +147,4 @@ form button {
     left: 50%;
     transform: translate(-50%, -50%);
   }
-  
-  
 }
